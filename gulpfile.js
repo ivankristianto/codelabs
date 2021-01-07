@@ -97,7 +97,7 @@ gulp.task('clean:build', (callback) => {
 
 // clean:dist removes the dist directory
 gulp.task('clean:dist', (callback) => {
-  return del('dist')
+  return del('docs')
 });
 
 // clean:js removes the built javascript
@@ -243,43 +243,43 @@ gulp.task('build', gulp.series(
 // copy copies the built artifacts in build into dist/
 gulp.task('copy', (callback) => {
   // Explicitly do not use gulp here. It's too slow and messes up the symlinks
-  fs.rename('build', 'dist', callback);
+  fs.rename('build', 'docs', callback);
 });
 
 // minify:css minifies the css
 gulp.task('minify:css', () => {
   const srcs = [
-    'dist/**/*.css',
-    '!dist/codelabs/**/*',
-    '!dist/elements/codelab-elements/*.css',
+    'docs/**/*.css',
+    '!docs/codelabs/**/*',
+    '!docs/elements/codelab-elements/*.css',
   ]
-  return gulp.src(srcs, { base: 'dist/' })
+  return gulp.src(srcs, { base: 'docs/' })
     .pipe(postcss(opts.postcss()))
-    .pipe(gulp.dest('dist'));
+    .pipe(gulp.dest('docs'));
 });
 
 // minify:css minifies the html
 gulp.task('minify:html', () => {
   const srcs = [
-    'dist/**/*.html',
-    '!dist/codelabs/**/*',
+    'docs/**/*.html',
+    '!docs/codelabs/**/*',
   ]
-  return gulp.src(srcs, { base: 'dist/' })
+  return gulp.src(srcs, { base: 'docs/' })
     .pipe(postcss(opts.postcss()))
     .pipe(htmlmin(opts.htmlmin()))
-    .pipe(gulp.dest('dist'));
+    .pipe(gulp.dest('docs'));
 });
 
 // minify:js minifies the javascript
 gulp.task('minify:js', () => {
   const srcs = [
-    'dist/**/*.js',
-    '!dist/codelabs/**/*',
-    '!dist/elements/codelab-elements/*.js',
+    'docs/**/*.js',
+    '!docs/codelabs/**/*',
+    '!docs/elements/codelab-elements/*.js',
   ]
-  return gulp.src(srcs, { base: 'dist/' })
+  return gulp.src(srcs, { base: 'docs/' })
     .pipe(uglify(opts.uglify()))
-    .pipe(gulp.dest('dist'));
+    .pipe(gulp.dest('docs'));
 });
 
 // minify minifies all minifiable things in dist
@@ -352,7 +352,7 @@ gulp.task('serve', gulp.series(
 // support live-reloading and should be used to verify final output before
 // publishing.
 gulp.task('serve:dist', gulp.series('dist', () => {
-  return gulp.src('dist')
+  return gulp.src('docs')
     .pipe(webserver(opts.webserver()));
 }));
 
@@ -913,7 +913,7 @@ const collectCodelabs = () => {
 // bucket. This only uploads the codelabs, the views remain unchanged.
 gulp.task('publish:staging:codelabs', (callback) => {
   const opts = { dry: DRY_RUN, deleteMissing: DELETE_MISSING };
-  const src = path.join('dist', CODELABS_NAMESPACE, '/');
+  const src = path.join('docs', CODELABS_NAMESPACE, '/');
   const dest = gcs.bucketFolderPath(STAGING_BUCKET, CODELABS_NAMESPACE);
   gcs.rsync(src, dest, opts, callback);
 });
@@ -922,7 +922,7 @@ gulp.task('publish:staging:codelabs', (callback) => {
 // a staging bucket. This does not upload any of the codelabs.
 gulp.task('publish:staging:views', (callback) => {
   const opts = { exclude: CODELABS_NAMESPACE, dry: DRY_RUN, deleteMissing: DELETE_MISSING };
-  gcs.rsync('dist', STAGING_BUCKET, opts, callback);
+  gcs.rsync('docs', STAGING_BUCKET, opts, callback);
 });
 
 // publish:prod:codelabs syncs codelabs from the staging to the production
