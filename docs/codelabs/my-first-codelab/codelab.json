@@ -1,0 +1,25 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2021-01-07T13:33:43+07:00",
+  "id": "my-first-codelab",
+  "duration": 6,
+  "title": "How to Write a Codelab",
+  "authors": "Ivan",
+  "summary": "My First Codelab",
+  "source": "my-first-codelab.md",
+  "theme": "",
+  "status": [
+    "published"
+  ],
+  "category": [
+    "sample"
+  ],
+  "tags": [
+    "medium"
+  ],
+  "feedback": "https://github.com/ivankristianto/codelabs",
+  "url": "my-first-codelab"
+}
